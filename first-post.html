@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>nikhilcoin</title>
+        <title>NPcoin</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
 
         <!--[if IE]>
@@ -607,8 +607,8 @@ div.output_area {
 div.output_area .MathJax_Display {
   text-align: left !important;
 }
-div.output_area 
-div.output_area 
+div.output_area
+div.output_area
 div.output_area img,
 div.output_area svg {
   max-width: 100%;
@@ -868,7 +868,7 @@ h6:hover .anchor-link {
 .text_cell.rendered .input_area {
   display: none;
 }
-.text_cell.rendered 
+.text_cell.rendered
 .text_cell.unrendered .text_cell_render {
   display: none;
 }
@@ -1017,14 +1017,14 @@ h6:hover .anchor-link {
 <span class="c1">#in python. For learning purposes only. Not real. Called it nikhilcoin for fun.</span>
 
 <span class="kn">import</span> <span class="nn">hashlib</span>
-<span class="kn">import</span> <span class="nn">random</span> 
-<span class="kn">import</span> <span class="nn">string</span> 
-<span class="kn">import</span> <span class="nn">json</span> 
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">binascii</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
-<span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">pl</span> 
-<span class="kn">import</span> <span class="nn">logging</span> 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
@@ -1062,7 +1062,7 @@ h6:hover .anchor-link {
     <span class="n">digest</span> <span class="o">=</span> <span class="n">sha256</span><span class="p">(</span><span class="n">message</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">nonce</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">digest</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'11'</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'Found nonce = </span><span class="si">%d</span><span class="s1">'</span> <span class="o">%</span> <span class="n">nonce</span><span class="p">)</span>
-        <span class="k">break</span> 
+        <span class="k">break</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sha256</span><span class="p">(</span><span class="n">message</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nonce</span><span class="p">)))</span>
 </pre></div>
 </div>
@@ -1145,7 +1145,7 @@ h6:hover .anchor-link {
 
 <span class="n">levels</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="c1"># An array of results with a row for each difficulty and a column for each test string</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">strings</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span> 
+<span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">strings</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 <span class="c1">#created dataframe with levels as column, strings rows. </span>
 <span class="n">results</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#changes NaN values to 0. </span>
 
@@ -1208,21 +1208,21 @@ h6:hover .anchor-link {
         <span class="bp">self</span><span class="o">.</span><span class="n">_private_key</span> <span class="o">=</span> <span class="n">RSA</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="n">random_gen</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_public_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_private_key</span><span class="o">.</span><span class="n">publickey</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_signer</span> <span class="o">=</span> <span class="n">PKCS1_v1_5</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_private_key</span><span class="p">)</span>
-        
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1">#this needs to be addressable by outside parties (public). But it is an intrinsic function that's private (by convention)</span>
         <span class="c1">#so make it a property. Address is public key (not the case in Elliptical Curve), RSA needs this shortcut.</span>
         <span class="k">return</span> <span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_public_key</span><span class="o">.</span><span class="n">exportKey</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">'DER'</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'ascii'</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="nf">sign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span> <span class="c1">#signing the public key with the private key. </span>
         <span class="sd">"""</span>
 <span class="sd">        Sign a message with this wallet</span>
 <span class="sd">        """</span>
         <span class="n">h</span> <span class="o">=</span> <span class="n">SHA</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'utf8'</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_signer</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">h</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'ascii'</span><span class="p">)</span> <span class="c1">#private method, only wallet object can access.</span>
-    
-    
+
+
 <span class="k">def</span> <span class="nf">verify_signature</span><span class="p">(</span><span class="n">wallet_address</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">signature</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Check that the provided `signature` corresponds to `message`</span>
@@ -1257,18 +1257,18 @@ h6:hover .anchor-link {
         <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span> <span class="o">=</span> <span class="n">transaction</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_index</span> <span class="o">=</span> <span class="n">output_index</span>
         <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">transaction</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span>
-        
+
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">'transaction'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="o">.</span><span class="n">hash</span><span class="p">(),</span>
             <span class="s1">'output_index'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_index</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">d</span>
-    
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">parent_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">output_index</span><span class="p">]</span>
-    
+
 
 <span class="k">class</span> <span class="nc">TransactionOutput</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">"""</span>
@@ -1277,7 +1277,7 @@ h6:hover .anchor-link {
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recipient_address</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">recipient</span> <span class="o">=</span> <span class="n">recipient_address</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">amount</span>
-        
+
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">'recipient_address'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">recipient</span><span class="p">,</span>
@@ -1285,7 +1285,7 @@ h6:hover .anchor-link {
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">d</span>
 
-        
+
 <span class="k">def</span> <span class="nf">compute_fee</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Compute the transaction fee by computing the difference between total input and total output</span>
@@ -1295,7 +1295,7 @@ h6:hover .anchor-link {
     <span class="k">assert</span> <span class="n">total_out</span> <span class="o">&lt;=</span> <span class="n">total_in</span><span class="p">,</span> <span class="s2">"Invalid transaction with out(</span><span class="si">%f</span><span class="s2">) &gt; in(</span><span class="si">%f</span><span class="s2">)"</span> <span class="o">%</span> <span class="p">(</span><span class="n">total_out</span><span class="p">,</span> <span class="n">total_in</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">total_in</span> <span class="o">-</span> <span class="n">total_out</span>
 
-    
+
 <span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wallet</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
         <span class="sd">"""</span>
@@ -1305,7 +1305,7 @@ h6:hover .anchor-link {
         <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="n">outputs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fee</span> <span class="o">=</span> <span class="n">compute_fee</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">signature</span> <span class="o">=</span> <span class="n">wallet</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">include_signature</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
-        
+
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_signature</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">"inputs"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">TransactionInput</span><span class="o">.</span><span class="n">to_dict</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">)),</span>
@@ -1315,11 +1315,11 @@ h6:hover .anchor-link {
         <span class="k">if</span> <span class="n">include_signature</span><span class="p">:</span>
             <span class="n">d</span><span class="p">[</span><span class="s2">"signature"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signature</span>
         <span class="k">return</span> <span class="n">d</span>
-    
+
     <span class="k">def</span> <span class="nf">hash</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">dumb_hash</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()))</span>
-    
-    
+
+
 <span class="k">class</span> <span class="nc">GenesisTransaction</span><span class="p">(</span><span class="n">Transaction</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    This is the first transaction which is a special transaction</span>
@@ -1332,7 +1332,7 @@ h6:hover .anchor-link {
         <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fee</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">signature</span> <span class="o">=</span> <span class="s1">'genesis'</span>
-        
+
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_signature</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="c1"># TODO: Instead, should sign genesis transaction will well-known public key ?</span>
         <span class="k">assert</span> <span class="ow">not</span> <span class="n">include_signature</span><span class="p">,</span> <span class="s2">"Cannot include signature of genesis transaction"</span>
@@ -1440,13 +1440,13 @@ h6:hover .anchor-link {
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">GenesisTransaction</span><span class="p">):</span>
         <span class="c1"># TODO: We should probably be more careful about validating genesis transactions</span>
         <span class="k">return</span> <span class="kc">True</span>
-    
+
     <span class="c1"># Verify input transactions</span>
     <span class="k">for</span> <span class="n">tx</span> <span class="ow">in</span> <span class="n">transaction</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">verify_transaction</span><span class="p">(</span><span class="n">tx</span><span class="o">.</span><span class="n">transaction</span><span class="p">):</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Invalid parent transaction"</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
-    
+
     <span class="c1"># Verify a single wallet owns all the inputs</span>
     <span class="n">first_input_address</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">parent_output</span><span class="o">.</span><span class="n">recipient</span>
     <span class="k">for</span> <span class="n">txin</span> <span class="ow">in</span> <span class="n">transaction</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
@@ -1456,15 +1456,15 @@ h6:hover .anchor-link {
                 <span class="p">(</span><span class="n">txin</span><span class="o">.</span><span class="n">parent_output</span><span class="o">.</span><span class="n">recipient</span><span class="p">,</span> <span class="n">first_input_address</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
-    
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">verify_signature</span><span class="p">(</span><span class="n">first_input_address</span><span class="p">,</span> <span class="n">tx_message</span><span class="p">,</span> <span class="n">transaction</span><span class="o">.</span><span class="n">signature</span><span class="p">):</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Invalid transaction signature, trying to spend someone else's money ?"</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
-    
+
     <span class="c1"># Call compute_fee here to trigger an assert if output sum is great than input sum. Without this,</span>
     <span class="c1"># a miner could put such an invalid transaction.</span>
     <span class="n">compute_fee</span><span class="p">(</span><span class="n">transaction</span><span class="o">.</span><span class="n">inputs</span><span class="p">,</span> <span class="n">transaction</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span>
-    
+
     <span class="k">return</span> <span class="kc">True</span>
 
 
@@ -1526,18 +1526,18 @@ h6:hover .anchor-link {
         <span class="n">reward</span> <span class="o">=</span> <span class="n">compute_total_fee</span><span class="p">(</span><span class="n">transactions</span><span class="p">)</span> <span class="o">+</span> <span class="n">BLOCK_INCENTIVE</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transactions</span> <span class="o">=</span> <span class="p">[</span><span class="n">GenesisTransaction</span><span class="p">(</span><span class="n">miner_address</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="n">reward</span><span class="p">)]</span> <span class="o">+</span> <span class="n">transactions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ancestor</span> <span class="o">=</span> <span class="n">ancestor</span>
-        
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_verif</span><span class="p">:</span>
             <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">verify_transaction</span><span class="p">,</span> <span class="n">transactions</span><span class="p">))</span>
-        
+
         <span class="n">json_block</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">include_hash</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nonce</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mine</span><span class="p">(</span><span class="n">json_block</span><span class="p">,</span> <span class="n">DIFFICULTY</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hash</span> <span class="o">=</span> <span class="n">dumb_hash</span><span class="p">(</span><span class="n">json_block</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nonce</span><span class="p">)</span>
-        
+
     <span class="k">def</span> <span class="nf">fee</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Return transaction fee for this block"""</span>
         <span class="k">return</span> <span class="n">compute_total_fee</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transactions</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_hash</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">"transactions"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">Transaction</span><span class="o">.</span><span class="n">to_dict</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transactions</span><span class="p">)),</span>
@@ -1547,8 +1547,8 @@ h6:hover .anchor-link {
             <span class="n">d</span><span class="p">[</span><span class="s2">"nonce"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nonce</span>
             <span class="n">d</span><span class="p">[</span><span class="s2">"hash"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hash</span>
         <span class="k">return</span> <span class="n">d</span>
-    
-    
+
+
 <span class="k">class</span> <span class="nc">GenesisBlock</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    The genesis block is the first block in the chain.</span>
@@ -1591,7 +1591,7 @@ h6:hover .anchor-link {
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="n">used_outputs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">used_outputs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    
+
     <span class="c1"># Verify hash</span>
     <span class="n">prefix</span> <span class="o">=</span> <span class="s1">'1'</span> <span class="o">*</span> <span class="n">DIFFICULTY</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">block</span><span class="o">.</span><span class="n">hash</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
@@ -1599,7 +1599,7 @@ h6:hover .anchor-link {
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">verify_transaction</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">transactions</span><span class="p">)):</span>
         <span class="k">return</span> <span class="kc">False</span>
-    
+
     <span class="c1"># Verify that transactions in this block don't use already spent outputs</span>
     <span class="c1">#</span>
     <span class="c1"># Note that we could move this in verify_transaction, but this would require some passing the used_outputs</span>
@@ -1610,13 +1610,13 @@ h6:hover .anchor-link {
                 <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Transaction uses an already spent output : </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">parent_output</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()))</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="n">used_outputs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">parent_output</span><span class="p">)</span>
-    
+
     <span class="c1"># Verify ancestors up to the genesis block</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">hash</span> <span class="o">==</span> <span class="n">genesis_block</span><span class="o">.</span><span class="n">hash</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">verify_block</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">ancestor</span><span class="p">,</span> <span class="n">genesis_block</span><span class="p">,</span> <span class="n">used_outputs</span><span class="p">):</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Failed to validate ancestor block"</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
-    
+
     <span class="c1"># Verify the first transaction is the miner's reward</span>
     <span class="n">tx0</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">transactions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tx0</span><span class="p">,</span> <span class="n">GenesisTransaction</span><span class="p">):</span>
@@ -1629,13 +1629,13 @@ h6:hover .anchor-link {
     <span class="k">if</span> <span class="ow">not</span> <span class="n">tx0</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">amount</span> <span class="o">==</span> <span class="n">reward</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Invalid amount in transaction 0 : </span><span class="si">%d</span><span class="s2">, expected </span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">tx0</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span> <span class="n">reward</span><span class="p">))</span>
         <span class="k">return</span> <span class="kc">False</span>
-    
+
     <span class="c1"># Only the first transaction shall be a genesis</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">transactions</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">GenesisTransaction</span><span class="p">):</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Non-genesis transaction at index 0"</span><span class="p">)</span>
-                <span class="k">return</span> <span class="kc">False</span>  
+                <span class="k">return</span> <span class="kc">False</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">GenesisTransaction</span><span class="p">):</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"GenesisTransaction (hash=</span><span class="si">%s</span><span class="s2">) at index </span><span class="si">%d</span><span class="s2"> != 0"</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">hash</span><span class="p">(),</span> <span class="n">i</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
