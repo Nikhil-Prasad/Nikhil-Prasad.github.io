@@ -654,8 +654,8 @@ div.output_area {
 div.output_area .MathJax_Display {
   text-align: left !important;
 }
-div.output_area 
-div.output_area 
+div.output_area
+div.output_area
 div.output_area img,
 div.output_area svg {
   max-width: 100%;
@@ -915,7 +915,7 @@ h6:hover .anchor-link {
 .text_cell.rendered .input_area {
   display: none;
 }
-.text_cell.rendered 
+.text_cell.rendered
 .text_cell.unrendered .text_cell_render {
   display: none;
 }
@@ -1069,14 +1069,14 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">hashlib</span>
-<span class="kn">import</span> <span class="nn">random</span> 
-<span class="kn">import</span> <span class="nn">string</span> 
-<span class="kn">import</span> <span class="nn">json</span> 
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">binascii</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
-<span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">pl</span> 
-<span class="kn">import</span> <span class="nn">logging</span> 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
@@ -1087,7 +1087,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The first part is defining the sha256 hash function. SHA256 is the 256 bit secure hash algorith that forms of the heart of the mining layer of the bitcoin protocol. Each set of transactions per block are run through two rounds of SHA256, this specific code only runs throguh it once. 
+<p>The first part is defining the sha256 hash function. SHA256 is the 256 bit secure hash algorith that forms of the heart of the mining layer of the bitcoin protocol. Each set of transactions per block are run through two rounds of SHA256, this specific code only runs throguh it once.
 The hashlib python library is used to impelment sha256. We first convert unicode to bytes, which is what sha256 takes as an input. Encodes it to bytes using ascii encoding. The function returns a message digest in hexadecimal.</p>
 </div>
 </div>
@@ -1096,7 +1096,7 @@ The hashlib python library is used to impelment sha256. We first convert unicode
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="How-do-hash-functions-work?">How do hash functions work?<a class="anchor-link" href="#How-do-hash-functions-work?">¶</a></h1><p>Hash functions are simple cryptographic primitives that are used in applications are varied as message transfer, data compression, authentication, and application protocols like TLS, etc. They vary in some of their properties, but in general are functions that can map data of arbitrary size to some fixed size (in the case of SHA256, this fixed size is 256 bits). We can call the input data of any size the message, and the output data of fixed size the hash. 
+<h1 id="How-do-hash-functions-work?">How do hash functions work?<a class="anchor-link" href="#How-do-hash-functions-work?">¶</a></h1><p>Hash functions are simple cryptographic primitives that are used in applications are varied as message transfer, data compression, authentication, and application protocols like TLS, etc. They vary in some of their properties, but in general are functions that can map data of arbitrary size to some fixed size (in the case of SHA256, this fixed size is 256 bits). We can call the input data of any size the message, and the output data of fixed size the hash.
 The hash of a hash function is this end data of fixed size.  The useful ones have some properties that are shared among them: they are preimage resistant, are collision resistant, and are second preimage resistant.</p>
 <p>1) Preimage Resistance - for any hash y, it should be difficult to find some message m which, when hashed, results in y. This is simple. Unlike something like an encryption, which naturally has a decryption function associated with it, as the goal is to eventually decrypyt the data, a hash function should not have an "easy" dehashing algorithm. It should be one way operation. "difficult or hard" has a very specific meaning here. For a hash function with a range of size 2k, it should take a hacker/adversary 2k/2 or 2k-1 attempts on average before they find the solution.</p>
 <p>2) Collision Resistance - given two messages m1 and m2, it should be difficult to find a hash such that hash(k,m1)=hash(k,m2) where k is the hash key. This just means that two messages run through a hash algorithm should not result in the creation of the same hash. If one thinks about the problem from a mapping perspective, they can see that a hash function maps from a infinite size space (the message can be of arbitrary length) to a finite space (whatever the length of the hash is intrisincally limits the number of possible hashes, i.e. the hash space). Basically this means that collisions are a certainty to occur at some point, as you are eventually going to reach the limit on the hash space. The function design this creates is to make the hash space large enough to make that probability very low.</p>
@@ -1121,7 +1121,7 @@ The hash of a hash function is this end data of fixed size.  The useful ones hav
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="About-Mining-Difficulty">About Mining Difficulty<a class="anchor-link" href="#About-Mining-Difficulty">¶</a></h1><p>Bitcoin uses hash functions, specifically SHA256 to provide security to the network in the form of mining. 
+<h1 id="About-Mining-Difficulty">About Mining Difficulty<a class="anchor-link" href="#About-Mining-Difficulty">¶</a></h1><p>Bitcoin uses hash functions, specifically SHA256 to provide security to the network in the form of mining.
 As explained, hash functions map/compress some message of arbitrary size to a hash of fixed size. This hash is meant to be 1) one-way in the form of first and second preimage reistant conditions, 2) resistant to collisions and 3) reasonbly unique (which is an implication of the first two).</p>
 <p>In Bitcoin the data to be hashed is a list of transactions. Every 10 minutes transactions take place and are recorded in a block datastructure. The transactions are public key to public key, and the entire block data is hashed. This hash is then put into the header of the next block of transactions, and it the block points back to the previous block. Because hashes are "unique", the transaction history cannot be rewritten without changing the hash, which would "delink" the block from the chain. This is the blockchain (simplified).</p>
 <p>Hashes are not computationally difficult i.e. hashing a specific piece of data is not computationally expensive. Mining, however, in bitcoin is meant to be computationally difficult, as this is another layer of security. Bitcoin accomplishes this by requiring a specific hash. The protocol asks you to find a nonce (as I have done below) to append to the transaction message that produces a "specific" type of hash. In bitcoin, this means that the 256 bit hash has to "below" a certain number, i.e. the first "x" digits have to be 0 in the hash. This "x" is a function of the computational power in the network. So if there is only one CPU mining bitcoin, the number of leading zeros (x) can be 1 or 2. If giant server farms are dedicating all their computation power to mine bitcoin, "x" can be 75 out of 256 zeroes. In this particulary implementation, we use leading Ones instead of Leading Zeroes as Bitcoin does, but the principles remain the same. I first demonstrate this below using a very simple function to show how difficult this can make mining.</p>
@@ -1134,11 +1134,11 @@ As explained, hash functions map/compress some message of arbitrary size to a ha
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">message</span> <span class="o">=</span> <span class="s2">"Bob to Alice 1 NPC, Alice to Jack .16 NPC"</span>
-<span class="k">for</span> <span class="n">nonce</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span> 
+<span class="k">for</span> <span class="n">nonce</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
     <span class="n">digest</span> <span class="o">=</span> <span class="n">sha256</span><span class="p">(</span><span class="n">message</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">nonce</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">digest</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'11'</span><span class="p">):</span> <span class="c1">#number of leading ones required. </span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'Found nonce = </span><span class="si">%d</span><span class="s1">'</span> <span class="o">%</span> <span class="n">nonce</span><span class="p">)</span>
-        <span class="k">break</span> 
+        <span class="k">break</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sha256</span><span class="p">(</span><span class="n">message</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nonce</span><span class="p">)))</span>
 </pre></div>
 </div>
@@ -1171,11 +1171,11 @@ As explained, hash functions map/compress some message of arbitrary size to a ha
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">message</span> <span class="o">=</span> <span class="s2">"Bob to Alice 1 NPC, Alice to Jack .16 NPC"</span>
-<span class="k">for</span> <span class="n">nonce</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">):</span> 
+<span class="k">for</span> <span class="n">nonce</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">):</span>
     <span class="n">digest</span> <span class="o">=</span> <span class="n">sha256</span><span class="p">(</span><span class="n">message</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">nonce</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">digest</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'1111'</span><span class="p">):</span> <span class="c1">#number of leading ones required. </span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'Found nonce = </span><span class="si">%d</span><span class="s1">'</span> <span class="o">%</span> <span class="n">nonce</span><span class="p">)</span>
-        <span class="k">break</span> 
+        <span class="k">break</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sha256</span><span class="p">(</span><span class="n">message</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nonce</span><span class="p">)))</span>
 </pre></div>
 </div>
@@ -1212,7 +1212,7 @@ As explained, hash functions map/compress some message of arbitrary size to a ha
     <span class="n">digest</span> <span class="o">=</span> <span class="n">sha256</span><span class="p">(</span><span class="n">message</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">nonce</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">digest</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'111111'</span><span class="p">):</span> <span class="c1">#number of leading ones required. </span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'Found nonce = </span><span class="si">%d</span><span class="s1">'</span> <span class="o">%</span> <span class="n">nonce</span><span class="p">)</span>
-        <span class="k">break</span> 
+        <span class="k">break</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sha256</span><span class="p">(</span><span class="n">message</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nonce</span><span class="p">)))</span>
 </pre></div>
 </div>
@@ -1245,11 +1245,11 @@ As explained, hash functions map/compress some message of arbitrary size to a ha
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">message</span> <span class="o">=</span> <span class="s2">"Bob to Alice 1 NPC, Alice to Jack .16 NPC"</span>
-<span class="k">for</span> <span class="n">nonce</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000000</span><span class="p">):</span> 
+<span class="k">for</span> <span class="n">nonce</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000000</span><span class="p">):</span>
     <span class="n">digest</span> <span class="o">=</span> <span class="n">sha256</span><span class="p">(</span><span class="n">message</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">nonce</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">digest</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'11111111'</span><span class="p">):</span> <span class="c1">#number of leading ones required. 8 in this example</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'Found nonce = </span><span class="si">%d</span><span class="s1">'</span> <span class="o">%</span> <span class="n">nonce</span><span class="p">)</span>
-        <span class="k">break</span> 
+        <span class="k">break</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sha256</span><span class="p">(</span><span class="n">message</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nonce</span><span class="p">)))</span>
 </pre></div>
 </div>
@@ -1272,7 +1272,7 @@ As explained, hash functions map/compress some message of arbitrary size to a ha
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As you can see, adding 8 leading zeroes led to the loop to go through a full 10 million nonce and hash combinations, and then break the loop and just print out a hash that does not have any leading ones. I could increase the range function bounds to over 100,000,000 attempts but it would take too much time on my device and I think the point has been illustrated.</p>
-<p>Bitcoin was cleverly designed like this to make security a "function" of computational power in the network. What I illustrated above is the heart of the "proof of work" puzzle that underlies bitcoin security. This game goes on every 10 minutes, as all the active transactions that have happened in a 10 minute span are pooled into a "message" like above, and the goal of the mining process is to find the nonce that leads to a working hash based on how many leading zeroes (in our case leading ones) the protocol has determined is the adequate difficulty (the protocol actually sets the difficulty to map to about 10 minutes between block times i.e. it should take about 10 minutes between a block process being started and a nonce being found).  The goal of every miner in the network is to find this nonce. The rest of the network then easily verifies by appending the nonce found by the first miner to the transaction list and hashing it. If the result is satisfactory, that is, if it satisfies the number of leading ones that the difficulty dictates, then the game is over, and the miner who found the nonce first is rewarded with 25 bitcoin (this bitcoin reward halves based on a scale, the reward is now 12.5 bitcoin). I'll now move onto making difficulty a function 
+<p>Bitcoin was cleverly designed like this to make security a "function" of computational power in the network. What I illustrated above is the heart of the "proof of work" puzzle that underlies bitcoin security. This game goes on every 10 minutes, as all the active transactions that have happened in a 10 minute span are pooled into a "message" like above, and the goal of the mining process is to find the nonce that leads to a working hash based on how many leading zeroes (in our case leading ones) the protocol has determined is the adequate difficulty (the protocol actually sets the difficulty to map to about 10 minutes between block times i.e. it should take about 10 minutes between a block process being started and a nonce being found).  The goal of every miner in the network is to find this nonce. The rest of the network then easily verifies by appending the nonce found by the first miner to the transaction list and hashing it. If the result is satisfactory, that is, if it satisfies the number of leading ones that the difficulty dictates, then the game is over, and the miner who found the nonce first is rewarded with 25 bitcoin (this bitcoin reward halves based on a scale, the reward is now 12.5 bitcoin). I'll now move onto making difficulty a function
 as opposed to just having a nonce in some arbitrary range. This will be useful as I want to show the distribution of nonce attempts around different hashes.</p>
 </div>
 </div>
@@ -1309,7 +1309,7 @@ as opposed to just having a nonce in some arbitrary range. This will be useful a
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>we generate a mining function that initializes the number of leading 1's at 1, and takes an input of a message. 
+<p>we generate a mining function that initializes the number of leading 1's at 1, and takes an input of a message.
 (This is true even in bitcoin, the message to be hashed on chain can be anything that fits within bitcoin's scripting language, which is general purpose and can extend to smart contracts among other things. In Ethereum this includes smart contracts among other things). It then sets a prefix term, which is just the number of leading ones. The rest of the function is just what we did above. Below we test the same hash with 2 different difficulties to ensure it works.</p>
 </div>
 </div>
@@ -1371,7 +1371,7 @@ Took 2272 iterations
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">levels</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">#keeping difficulty between 1 and 5</span>
 
 <span class="c1"># An array of results with a row for each difficulty and a column for each test string</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">strings</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span> 
+<span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">strings</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 <span class="c1">#created dataframe with levels as column, strings rows. </span>
 <span class="n">results</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#changes NaN values to 0. (aka when it fails to generate a nonce)</span>
 
