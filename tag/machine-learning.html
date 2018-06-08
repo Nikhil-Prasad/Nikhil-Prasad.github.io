@@ -4,10 +4,10 @@
 <head>
   <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
 
-    <link rel="stylesheet" type="text/css" href="http://Nikhil-Prasad.github.io/theme/stylesheet/style.min.css">
+    <link rel="stylesheet" type="text/css" href="/theme/stylesheet/style.min.css">
 
-  <link rel="stylesheet" type="text/css" href="http://Nikhil-Prasad.github.io/theme/pygments/github.min.css">
-  <link rel="stylesheet" type="text/css" href="http://Nikhil-Prasad.github.io/theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/pygments/github.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/font-awesome.min.css">
 
 
 
@@ -27,7 +27,7 @@
 <meta property="og:title" content="Nikhil Prasad"/>
 <meta property="og:description" content="Nikhil Prasad's Thoughts and Writings"/>
 <meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="http://Nikhil-Prasad.github.io"/>
+<meta property="og:url" content=""/>
 
   <title>Nikhil Prasad &ndash;     Tag Machine Learning
 </title>
@@ -36,17 +36,17 @@
 <body>
   <aside>
     <div>
-      <a href="http://Nikhil-Prasad.github.io">
-        <img src="http://Nikhil-Prasad.github.io/theme/img/profile.png" alt="Nikhil Prasad" title="Nikhil Prasad">
+      <a href="">
+        <img src="/theme/img/profile.png" alt="Nikhil Prasad" title="Nikhil Prasad">
       </a>
-      <h1><a href="http://Nikhil-Prasad.github.io">Nikhil Prasad</a></h1>
+      <h1><a href="">Nikhil Prasad</a></h1>
 
 
       <nav>
         <ul class="list">
-          <li><a href="http://Nikhil-Prasad.github.io/pages/about-me.html#about-me">About Me</a></li>
-          <li><a href="http://Nikhil-Prasad.github.io/pages/currently-reading.html#currently-reading">Currently Reading</a></li>
-          <li><a href="http://Nikhil-Prasad.github.io/pages/projects.html#projects">Projects</a></li>
+          <li><a href="/about-me.html#about-me">About Me</a></li>
+          <li><a href="/currently-reading.html#currently-reading">Currently Reading</a></li>
+          <li><a href="/projects.html#projects">Projects</a></li>
 
         </ul>
       </nav>
@@ -63,9 +63,10 @@
   <main>
 
     <nav>
-      <a href="http://Nikhil-Prasad.github.io">    Home
+      <a href="">    Home
 </a>
 
+      <a href="index.html">Home</a>
 
 
     </nav>
@@ -74,9 +75,9 @@
 
 <article>
   <header>
-    <h2><a href="http://Nikhil-Prasad.github.io/Adaline Algorithm.html#Adaline Algorithm">Adaptive Linear Neuron (ADALINE)</a></h2>
+    <h2><a href="/Adaline Algorithm.html#Adaline Algorithm">Adaptive Linear Neuron (ADALINE)</a></h2>
     <p>
-          Posted on Mon 21 May 2018 in <a href="http://Nikhil-Prasad.github.io/category/posts.html">posts</a>
+          Posted on Mon 21 May 2018 in <a href="/posts/index.html">posts</a>
 
 
 
@@ -90,16 +91,16 @@
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Adaline-(ADAptive-LInear-NEuron).-ML-Algorithms-Pt-2.">Adaline (ADAptive LInear NEuron). ML Algorithms Pt 2.<a class="anchor-link" href="#Adaline-(ADAptive-LInear-NEuron).-ML-Algorithms-Pt-2.">¶</a></h1><p>Adaline is one of the earliest single layer neuron implementations for binary classification. ( I worked with the perceptron in the previous ML from Source post). The key difference between Adaline and the Perceptron are in the weight functions. In the perceptron, the sum of the weights and inputs (dot product) are updated using the heaviside function, that is, the outputs above a certain threshold are "transformed" to +1 or -1, thereby forming the structure for classification. In adaline, the weights are adjusted according to the actual sum of the outputs, instead of being transformed to a binary classification scheme.</p>
       <br>
-      <a class="btn" href="http://Nikhil-Prasad.github.io/Adaline Algorithm.html#Adaline Algorithm">    Continue reading
+      <a class="btn" href="/Adaline Algorithm.html#Adaline Algorithm">    Continue reading
 </a>
   </div>
   <hr />
 </article>
 <article>
   <header>
-    <h2><a href="http://Nikhil-Prasad.github.io/Perceptron.html#Perceptron">Perceptron Learning Algorithm</a></h2>
+    <h2><a href="/Perceptron.html#Perceptron">Perceptron Learning Algorithm</a></h2>
     <p>
-          Posted on Sat 19 May 2018 in <a href="http://Nikhil-Prasad.github.io/category/machine-learning.html">machine Learning</a>
+          Posted on Sat 19 May 2018 in <a href="/machine-learning/index.html">machine Learning</a>
 
 
 
@@ -114,7 +115,7 @@
 <h1 id="Perceptron-Learning-Rule--ML-Algorithms-Part-1">Perceptron Learning Rule- ML Algorithms Part 1<a class="anchor-link" href="#Perceptron-Learning-Rule--ML-Algorithms-Part-1">¶</a></h1><p>This is an implementation of the perceptron learning algorithm, which was the first computatutational represenation of a neuron (1957). In the modern sense, its only really useful as a binary classifier and interesting as the starting point for the field of neural networks.</p>
 <p>The perceptron algorith is a classifier. Broadly speaking, all classification problems can be broken down into 2 distinct types, linearly separable or non-linearly separable. Distinction between these two is whether the data can be classified into two groups by a hyperplane. In one variable one target situations, this just means that the data can be separated by a line. Some simple examples of "linearly separable data" are the boolean function categories. That is to say, the perceptron can model data that fits into the logic of "and", "or" (by drawing a line through their truth values). In this specific example we'll be using the famous Iris data set, which clearly categorizes to "or" i.e. the flower is either this or that. Another dataset example that we know would be linearly separable is "and" i.e. either the data cotains both of these features or it doesn't.</p>
       <br>
-      <a class="btn" href="http://Nikhil-Prasad.github.io/Perceptron.html#Perceptron">    Continue reading
+      <a class="btn" href="/Perceptron.html#Perceptron">    Continue reading
 </a>
   </div>
 </article>
@@ -140,7 +141,7 @@
   "@context" : "http://schema.org",
   "@type" : "Blog",
   "name": " Nikhil Prasad ",
-  "url" : "http://Nikhil-Prasad.github.io",
+  "url" : "",
   "image": "",
   "description": "Nikhil Prasad's Thoughts and Writings"
 }
