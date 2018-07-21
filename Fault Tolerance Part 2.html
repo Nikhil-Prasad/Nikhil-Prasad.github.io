@@ -1,0 +1,1620 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="/theme/pygments/github.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/font-awesome.min.css">
+
+
+
+
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+
+
+<meta name="author" content="Nikhil Prasad" />
+<meta name="description" content="Byzantine General's Problem Part 2¶In this post, we're going to explore the one of the original papers by the authors of the Byzantine Generals Problem (Pease, Shostak, Lamport). The paper will be linked below. This is one of the seminal pieces that introduces the concept of fault tolerance in distributed systems, and sowed the seeds for practically Byzantine fault tolerant systems, one of which has become bitcoin. This part will speak specifically about the case of a single fault in a distributed network." />
+<meta name="keywords" content="math, systems, algorithms, cryptography">
+<meta property="og:site_name" content="Nikhil Prasad"/>
+<meta property="og:title" content="Byzantine Generals Problem Part 2"/>
+<meta property="og:description" content="Byzantine General's Problem Part 2¶In this post, we're going to explore the one of the original papers by the authors of the Byzantine Generals Problem (Pease, Shostak, Lamport). The paper will be linked below. This is one of the seminal pieces that introduces the concept of fault tolerance in distributed systems, and sowed the seeds for practically Byzantine fault tolerant systems, one of which has become bitcoin. This part will speak specifically about the case of a single fault in a distributed network."/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="/Fault Tolerance Part 2.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-07-18 10:20:00-04:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="/author/nikhil-prasad.html">
+<meta property="article:section" content="Mathematics, Programming, Distributed"/>
+<meta property="article:tag" content="math"/>
+<meta property="article:tag" content="systems"/>
+<meta property="article:tag" content="algorithms"/>
+<meta property="article:tag" content="cryptography"/>
+<meta property="og:image" content="">
+
+  <title>Nikhil Prasad &ndash; Byzantine Generals Problem Part 2</title>
+
+
+  <!-- KaTeX -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.css" integrity="sha384-VEnyslhHLHiYPca9KFkBB3CMeslnM9CzwjxsEbZTeA21JBm7tdLwKoZmCt3cZTYD" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.js" integrity="sha384-O4hpKqcplNCe+jLuBVEXC10Rn1QEqAmX98lKAIFBEDxZI0a+6Z2w2n8AEtQbR4CD" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/contrib/auto-render.min.js" integrity="sha384-IiI65aU9ZYub2MY9zhtKd1H2ps7xxf+eb2YFG9lX6uRqpXCvBTOidPRCXCrQ++Uc" crossorigin="anonymous"></script>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="">
+        <img src="/theme/img/profile.png" alt="Nikhil Prasad" title="Nikhil Prasad">
+      </a>
+      <h1><a href="">Nikhil Prasad</a></h1>
+
+
+      <nav>
+        <ul class="list">
+          <li><a href="/about-me.html#about-me">About Me</a></li>
+          <li><a href="/currently-reading.html#currently-reading">Currently Reading</a></li>
+          <li><a href="/projects.html#projects">Projects</a></li>
+
+        </ul>
+      </nav>
+
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/nikhil-prasad-a412a186/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/Nikhil-Prasad" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-twitter" href="https://twitter.com/NPSix21?lang=en" target="_blank"><i class="fa fa-twitter"></i></a></li>
+      </ul>
+    </div>
+
+
+  </aside>
+  <main>
+
+    <nav>
+      <a href="">    Home
+</a>
+
+      <a href="index.html">Home</a>
+
+
+    </nav>
+
+<article class="single">
+  <header>
+    <h1 id="Fault Tolerance Part 2">Byzantine Generals Problem Part 2</h1>
+    <p>
+          Posted on Wed 18 July 2018 in <a href="/mathematics-programming-distributed/index.html">Mathematics, Programming, Distributed</a>
+
+
+    </p>
+  </header>
+
+
+  <div>
+    <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Byzantine-General&#x27;s-Problem-Part-2">Byzantine General's Problem Part 2<a class="anchor-link" href="#Byzantine-General&#x27;s-Problem-Part-2">¶</a></h1><p>In this post, we're going to explore the one of the original papers by the authors of the Byzantine Generals Problem (Pease, Shostak, Lamport). The paper will be linked below. This is one of the seminal pieces that introduces the  concept of fault tolerance in distributed systems, and sowed the seeds for practically Byzantine fault tolerant systems, one of which has become bitcoin. This part will speak specifically about the case of a single fault in a distributed network.</p>
+<h2 id="Reaching-Agreement-in-the-Presence-of-Faults--Introduction">Reaching Agreement in the Presence of Faults- Introduction<a class="anchor-link" href="#Reaching-Agreement-in-the-Presence-of-Faults--Introduction">¶</a></h2><p>The abstract/summary of this paper considers the problem associated with a set of isolated processors communicating with each other using only "two-party messages" (two party refers to the fact communications are between individual nodes e.g. P2P. there is no central node authority that send information to every other node simultaneously e.g. server-client). Each processor holds a value that has to be communicated to every other processor and then some consensus about the state of these values has to be reached for the entire distributed system to move forward. In the case that some of these processors are faulty, it is assumed that they can lie/miscommunicate the value being communicated to all the other processors, and this paper attempts to set a limit for the number of processors that can be faulty in order for the overall network to still function.  As previously mentioned in part 1, distributed fault tolerant systems need some sort of internal messaging system in order to reach consensus.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Some-Ideas">Some Ideas<a class="anchor-link" href="#Some-Ideas">¶</a></h2><p>Lamport et al start by giving an example of a distributed systme needing consensus:</p>
+<pre><code>It may be necessary, for example,for the processors of a redundant system to synchronize their internal docks periodically. Or they may have to settle upon a value of a time-varying input sensor that gives each of them a slightly different reading. In the absence of faults reaching a satisfactory mutual agreement is usually an easy matter. In most cases it suffices simply to exchange values (times, in the case of clock synchronization) and compute some kind of average. 
+
+</code></pre>
+<p>Lamport et al make it clear that in the case where all processors/nodes are honest, consensus is not an issue. But "in the presence of faulty processors, however, simple exchanges cannot be relied upon; a bad processor might report one value to a given processor and another value to some other processors, causing each to calculate a different average value" (Lamport et al 1)</p>
+<p>It is possible to devise voting schemes, with multiple rounds where processors exchange values, in which honest processors can reach consistency and maintain the network by either identifying which processors are faulty and removing them from the network, or finding a way to work with the faulty processors by allowing all the nonfaulty processors to reach an exact agreement about network state. However it is not always possible to design these sorts of voting schemes, even with the number of faulty processors is known to be less than the number of honest processors. But algorithms that can allow exact agreement between honest processors, with a certain hard limit on the number of faulty processors in the network. The role of this paper is to establish a proof that gives a limit on the number of faulty processors that can exist in a network while it remains fault tolerant. (Spoiler: its proof by induction :) )</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="The-Notion-of-Interactive-Consistency">The Notion of Interactive Consistency<a class="anchor-link" href="#The-Notion-of-Interactive-Consistency">¶</a></h2><p>Consider a set of n isolated processors, of which it is known that no more than m are faulty (m &lt; n). We are, however, not aware of which of the n processors are actually faulty. Furthermore, we assume that the processors can only communicate through two party messages. In this communication protocol, the messages are of negligible delay, and are fail-safe. That is to say, we assume integrity of the communication channel Along with that, the sender of the message is always identifiable by the reciever. That is to say, that processors cannot anonymously send messages in this communication protocol. In this situation, say that each processor has a private value $V_p$ (that could be something like its clock value as previously quoted, or some reading on an internal sensor as Lamport et al give as an example).</p>
+<p>The question then becomes whether or not we can devise a message exchange algorithm such that for some number of total processors $m$, n $\geq$ 0, that will allow each honest processor $p_n$ to compute a vector of values with an element for each of the n processors. This scenario must satisfy the two following conditions.</p>
+<ul>
+<li>1) Each honest processor must compute the exact same vector. </li>
+<li>2) the element of each processor $p_n$ must be the private value of that processor</li>
+</ul>
+<p>Such an algorithm would achieve interactive consistency, as it allows the honest (nonfaulty) processors to come to a consistent view of the private values of each processor, including the faulty ones. This vector is called the interactive consistency (IC) vector.</p>
+<p>The framing of this scenario is meant to exemplify a consensus of state. Once the IC vector has been calculated, any number of functions can be applied to it (based on the goals of the application). We can ensure consensus however, because by definition, each processor will have the same IC vector, which guarantees that the system has a consistent state.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Lamport et al will spend the rest of this paper proving that any algorithm that guarantees interactive consistency can only do so for n,m such that n $\geq$ 3m +1. This means that for a case of a single faulty processor, a distributed system needs a minimum of 4 total processors in order to achieve interactive consistency (and thereby fault tolerance).</p>
+<p>As an aside, it can be assumed that interactive consistency can be assured for any arbitrary $n \geq m \geq 0$ if we change the communication protocol in a way that ensures that faulty processors can refuse to pass on information obtained from other processors but cannot report false information (i.e. are no longer capable of being dishonest). This practically can be done using authenticators, which I will discuss later on in a separate post. For right now we focus on the case where we have no control over what faulty processors do.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Single-Fault-Case">Single Fault Case<a class="anchor-link" href="#Single-Fault-Case">¶</a></h1><p>This is a procedure for a single fault case: $m=1$ and $n=4$. This messaging procedure consists of one round of a message exchange where the processors all exchange their private values $V_p$. That is to say, in the situation of 4 processors, processor 1 would exchange its $V_p$ with processor 2,3,4, then the same would occur for processor 2, and so on. This is followed by a second round of messages where the processors exchange all the values they hold. After this the IC vector is computed and shared among all processors.</p>
+<p>In the first round of this exchange, if a nonfaulty processor $p$ fails to recieve a message from some other processor $q$, it just chooses a value at random and assigns to the value they should have recieved from $q$.</p>
+<p>In the second round of messaging, if the processors cannot agree on a common value for a specific processor (which would be the case if all of them had picked random values), then they just choose a NIL value to fill it with. This allows them to create an interactive consistency vector that they can all agree on. E.g. if Processor 2 had sent them all different values, then during round 2 they would realize that they could not agree on a shared value for it, and would set its $V_p$ as NIL or something of the sort.</p>
+<h2 id="Why-does-this-assure-Interactive-Consistency?">Why does this assure Interactive Consistency?<a class="anchor-link" href="#Why-does-this-assure-Interactive-Consistency?">¶</a></h2><p>We will explain this case by case.</p>
+<h3 id="No-faulty-Processors">No faulty Processors<a class="anchor-link" href="#No-faulty-Processors">¶</a></h3><p>In this case it should be fairly obvious that at the end of round one, all the processors have reached exactly the same conclusions about each other's private values. In round two, they confirm this and as a result, we can be certain that the IC vector will be exactly the same for all of them, and system state will be held.</p>
+<h3 id="One-Faulty-Processor-with-4-Processors-(single-fault-case)">One Faulty Processor with 4 Processors (single fault case)<a class="anchor-link" href="#One-Faulty-Processor-with-4-Processors-(single-fault-case)">¶</a></h3><p>In this case, interactive consistency will still hold. In the first round</p>
+<h3 id="Multiple-Faulty-Processors-with-4-Processors-(more-than-one-fault)">Multiple Faulty Processors with 4 Processors (more than one fault)<a class="anchor-link" href="#Multiple-Faulty-Processors-with-4-Processors-(more-than-one-fault)">¶</a></h3><p>Interactive consistency will not hold.</p>
+<h2 id="Computation-of-the-IC-Vector">Computation of the IC Vector<a class="anchor-link" href="#Computation-of-the-IC-Vector">¶</a></h2><p>We will go through the two rounds of message exchange for each of the above cases and show how the information from each round is used to compute the IC vector and how that corresponds to the state of the system. I will do this with arbirtary values to show how the IC vector gets computed. This is a very rough example just meant to elucidate the state of all the private values at different points with the message exchange protocol. A lot of this code is being repeated for the sake of clarity, it makes much more sense in my mind to repeat each code block with different values and recompute than to abstract it away and utilize a function. People don't pay attention when things get abstracted.</p>
+<h3 id="Message-Exchange--No-Faulty-Processors">Message Exchange- No Faulty Processors<a class="anchor-link" href="#Message-Exchange--No-Faulty-Processors">¶</a></h3><p>In this first round, each processor exchanges its own $V_p$ value with every other processor. In the single fault case, this means that each of the 4 processors has 3 values from the other processors and its own private value.  For example, that means that the 4 values that will be held by processor 1 are: $V{p1}$, $V{p_2}^2$, $V{p3}^3$, $V{p_4}^4$. We are using superscript here to signify which processor the private value has been recieved from. In this case processor 1 has held its own private value, and has recieved the other 3 from each processor respectively. We will use superscript to delineate how the private value changes as the message rounds proceed. Below I will utilize arbitrary numbers for each private value as I believe it will make this process more clear.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [40]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+
+<span class="c1">#abitrary setting of values </span>
+<span class="n">vp1</span> <span class="o">=</span> <span class="mi">4</span> 
+<span class="n">vp2</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">vp3</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">vp4</span> <span class="o">=</span> <span class="mi">2</span> 
+
+<span class="c1">#now we set the values that each processor communicates. In this case, we assume no faulty </span>
+<span class="c1">#processors, as each is messaging its proper value. the 11 subscript is meant to signifiy that </span>
+<span class="c1"># this is the VP1 value given by processor 1. </span>
+<span class="n">vp11</span> <span class="o">=</span> <span class="n">vp1</span>
+<span class="n">vp22</span> <span class="o">=</span> <span class="n">vp2</span>
+<span class="n">vp33</span> <span class="o">=</span> <span class="n">vp3</span>
+<span class="n">vp44</span> <span class="o">=</span> <span class="n">vp4</span>
+
+<span class="c1">#round 1 information vectors for each processor. Using arbitrary numbers. </span>
+
+<span class="n">r1_processor_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vp1</span><span class="p">,</span><span class="n">vp22</span><span class="p">,</span><span class="n">vp33</span><span class="p">,</span><span class="n">vp44</span><span class="p">])</span>
+<span class="n">r1_processor_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vp11</span><span class="p">,</span><span class="n">vp2</span><span class="p">,</span><span class="n">vp33</span><span class="p">,</span><span class="n">vp44</span><span class="p">])</span>
+<span class="n">r1_processor_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vp11</span><span class="p">,</span><span class="n">vp22</span><span class="p">,</span><span class="n">vp3</span><span class="p">,</span><span class="n">vp44</span><span class="p">])</span>
+<span class="n">r1_processor_4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vp11</span><span class="p">,</span><span class="n">vp22</span><span class="p">,</span><span class="n">vp33</span><span class="p">,</span><span class="n">vp4</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"At the end of round one"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 1 values ="</span><span class="p">,</span> <span class="n">r1_processor_1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 2 values ="</span><span class="p">,</span> <span class="n">r1_processor_2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 3 values ="</span><span class="p">,</span> <span class="n">r1_processor_3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 4 values ="</span><span class="p">,</span> <span class="n">r1_processor_4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>At the end of round one
+processor 1 values = [4 5 6 2]
+processor 2 values = [4 5 6 2]
+processor 3 values = [4 5 6 2]
+processor 4 values = [4 5 6 2]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [41]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># now we will show the state of information that each processor has at the end of round 2. </span>
+<span class="c1">#each is an array of array. The values are the same here but we are reordering to keep consistency. </span>
+
+<span class="n">r2_processor_1</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1_processor_1</span><span class="p">,</span> <span class="n">r1_processor_2</span><span class="p">,</span> <span class="n">r1_processor_3</span><span class="p">,</span> <span class="n">r1_processor_4</span><span class="p">]</span>
+<span class="n">r2_processor_2</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1_processor_2</span><span class="p">,</span> <span class="n">r1_processor_1</span><span class="p">,</span> <span class="n">r1_processor_3</span><span class="p">,</span> <span class="n">r1_processor_4</span><span class="p">]</span>
+<span class="n">r2_processor_3</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1_processor_3</span><span class="p">,</span> <span class="n">r1_processor_1</span><span class="p">,</span> <span class="n">r1_processor_2</span><span class="p">,</span> <span class="n">r1_processor_3</span><span class="p">]</span>
+<span class="n">r2_processor_4</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1_processor_4</span><span class="p">,</span> <span class="n">r1_processor_1</span><span class="p">,</span> <span class="n">r1_processor_2</span><span class="p">,</span> <span class="n">r1_processor_3</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 1,end of round 2 ="</span><span class="p">,</span> <span class="n">r2_processor_1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 2,end of round 2 ="</span><span class="p">,</span> <span class="n">r2_processor_2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 3,end of round 2 ="</span><span class="p">,</span> <span class="n">r2_processor_3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 4,end of round 2 ="</span><span class="p">,</span> <span class="n">r2_processor_4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>processor 1,end of round 2 = [array([4, 5, 6, 2]), array([4, 5, 6, 2]), array([4, 5, 6, 2]), array([4, 5, 6, 2])]
+
+
+processor 2,end of round 2 = [array([4, 5, 6, 2]), array([4, 5, 6, 2]), array([4, 5, 6, 2]), array([4, 5, 6, 2])]
+
+
+processor 3,end of round 2 = [array([4, 5, 6, 2]), array([4, 5, 6, 2]), array([4, 5, 6, 2]), array([4, 5, 6, 2])]
+
+
+processor 4,end of round 2 = [array([4, 5, 6, 2]), array([4, 5, 6, 2]), array([4, 5, 6, 2]), array([4, 5, 6, 2])]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As we can see each processor has seen that an array with the values:</p>
+<ul>
+<li>$V_{p1}$ = 4 </li>
+<li>$V_{p2}$ = 5</li>
+<li>$V_{p3}$ = 6</li>
+<li>$V_{p4}$ = 2</li>
+</ul>
+<p>This becomes the interactive consistency vector, and each processor records this as their final version of each private value. The system state is ensured.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Message-Exchange--Single-Fault">Message Exchange- Single Fault<a class="anchor-link" href="#Message-Exchange--Single-Fault">¶</a></h2><p>We now repeat the code again in order to show what happens when there is a single processor being faulty. In a case where the faulty processor does not send any value, this is very simple. The processors all record NIL in round one, and proceed to round two very similarly to the above case. They would all have $V_{p2}$ = NIL for their IC vector.</p>
+<p>However, let us consider the more difficult case where this faulty processor is malicious, and is communicating different values to each processor than its own actual internal value. I have picked 12 and 14 as the arbitrary values that it sends out to each other processor. There are other variants of this sort of fault, but we will demonstrate that the end result will be similar.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [42]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#abitrary setting of values. We keep the same values for ease.  </span>
+<span class="n">vp1</span> <span class="o">=</span> <span class="mi">4</span> 
+<span class="n">vp2</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">vp3</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">vp4</span> <span class="o">=</span> <span class="mi">2</span> 
+
+<span class="c1">#now we set the values that each processor communicates. In this case, we will assume that </span>
+<span class="c1">#processor 2 is being faulty. </span>
+<span class="n">vp11</span> <span class="o">=</span> <span class="n">vp1</span>
+<span class="n">vp22_false1</span> <span class="o">=</span> <span class="mi">12</span> <span class="c1"># we pick a random value that processor 2 is sending out to other processors. </span>
+<span class="n">vp22_false2</span> <span class="o">=</span> <span class="mi">14</span> <span class="c1"># we pick another random value</span>
+<span class="n">vp22</span> <span class="o">=</span> <span class="n">vp2</span>
+<span class="n">vp33</span> <span class="o">=</span> <span class="n">vp3</span>
+<span class="n">vp44</span> <span class="o">=</span> <span class="n">vp4</span>
+
+<span class="c1">#round 1 information vectors for each processor. Using arbitrary numbers. </span>
+
+<span class="n">r1_processor_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vp1</span><span class="p">,</span><span class="n">vp22_false2</span><span class="p">,</span><span class="n">vp33</span><span class="p">,</span><span class="n">vp44</span><span class="p">])</span>
+<span class="n">r1_processor_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vp11</span><span class="p">,</span><span class="n">vp2</span><span class="p">,</span><span class="n">vp33</span><span class="p">,</span><span class="n">vp44</span><span class="p">])</span>
+<span class="n">r1_processor_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vp11</span><span class="p">,</span><span class="n">vp22_false1</span><span class="p">,</span><span class="n">vp3</span><span class="p">,</span><span class="n">vp44</span><span class="p">])</span>
+<span class="n">r1_processor_4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vp11</span><span class="p">,</span><span class="n">vp22</span><span class="p">,</span><span class="n">vp33</span><span class="p">,</span><span class="n">vp4</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"At the end of round one"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 1 values ="</span><span class="p">,</span> <span class="n">r1_processor_1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 2 values ="</span><span class="p">,</span> <span class="n">r1_processor_2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 3 values ="</span><span class="p">,</span> <span class="n">r1_processor_3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 4 values ="</span><span class="p">,</span> <span class="n">r1_processor_4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>At the end of round one
+processor 1 values = [ 4 14  6  2]
+processor 2 values = [4 5 6 2]
+processor 3 values = [ 4 12  6  2]
+processor 4 values = [4 5 6 2]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you can see, at the end of round one, each of the processors have a different understanding of what the value of processor two is. They have not recorded NIL because they do not know at this point that processor 2 is malicious. It is up to the messaging algorithm (protocol) to correct this in round two in order to ensure interactive consistency.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [43]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r2_processor_1</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1_processor_1</span><span class="p">,</span> <span class="n">r1_processor_2</span><span class="p">,</span> <span class="n">r1_processor_3</span><span class="p">,</span> <span class="n">r1_processor_4</span><span class="p">]</span>
+<span class="n">r2_processor_2</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1_processor_2</span><span class="p">,</span> <span class="n">r1_processor_1</span><span class="p">,</span> <span class="n">r1_processor_3</span><span class="p">,</span> <span class="n">r1_processor_4</span><span class="p">]</span>
+<span class="n">r2_processor_3</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1_processor_3</span><span class="p">,</span> <span class="n">r1_processor_1</span><span class="p">,</span> <span class="n">r1_processor_2</span><span class="p">,</span> <span class="n">r1_processor_3</span><span class="p">]</span>
+<span class="n">r2_processor_4</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1_processor_4</span><span class="p">,</span> <span class="n">r1_processor_1</span><span class="p">,</span> <span class="n">r1_processor_2</span><span class="p">,</span> <span class="n">r1_processor_3</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 1,end of round 2 ="</span><span class="p">,</span> <span class="n">r2_processor_1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 2,end of round 2 ="</span><span class="p">,</span> <span class="n">r2_processor_2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 3,end of round 2 ="</span><span class="p">,</span> <span class="n">r2_processor_3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 4,end of round 2 ="</span><span class="p">,</span> <span class="n">r2_processor_4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>processor 1,end of round 2 = [array([ 4, 14,  6,  2]), array([4, 5, 6, 2]), array([ 4, 12,  6,  2]), array([4, 5, 6, 2])]
+
+
+processor 2,end of round 2 = [array([4, 5, 6, 2]), array([ 4, 14,  6,  2]), array([ 4, 12,  6,  2]), array([4, 5, 6, 2])]
+
+
+processor 3,end of round 2 = [array([ 4, 12,  6,  2]), array([ 4, 14,  6,  2]), array([4, 5, 6, 2]), array([ 4, 12,  6,  2])]
+
+
+processor 4,end of round 2 = [array([4, 5, 6, 2]), array([ 4, 14,  6,  2]), array([4, 5, 6, 2]), array([ 4, 12,  6,  2])]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this second round of message exchange, it is easier to look at how interactive consistency is achieved by looking at the state of one processor. Let's pick processor one.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [46]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">r2_processor_1</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[ 4 14  6  2]
+[4 5 6 2]
+[ 4 12  6  2]
+[4 5 6 2]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Ignoring the terrible formatting, we can see the internal view that processor 1 has of every single other processor's understanding of round 1.  It sees its own understanding (line 1). It can see that 3 of the 4 values are consistent with every other processor. In this step, it can see that there is not consensus on processor 2, and here is where it would record the value NIL for processor 2.</p>
+<p>This would be the same logic that each other processor would go through (I have anthromorphized them, in reality this would be coded in) and would check to see if every other processor has the same values across the board. An extremely simplified version would look something like this perhaps.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [66]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">store</span> <span class="o">=</span> <span class="n">r2_processor_1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">r2_processor_1</span><span class="p">:</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">all</span> <span class="o">!=</span> <span class="n">store</span><span class="o">.</span><span class="n">all</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"processor arrays don't match"</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>processor arrays don't match [4 5 6 2]
+processor arrays don't match [ 4 12  6  2]
+processor arrays don't match [4 5 6 2]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This code (very crudely) performs a check to imitate a processor checking to see if its vector matches the other vectors. It sees that it doesn't. All of the other processors would do this, and they would all end up changing their private values for processor 2 to NIL (or some other predefined value) as they would all reach the conclusion that their private value for 2 is different from everyone else's independently (while everything else is the same). As a result, they would then end up with the same interactive consistency vector. This interactive consistency vector would include a NIL value for processor number 2, which is critical to maintaing fault tolerance, as all the other three processors could then "excommunicate" processor 2 from the system. The critical point here is that while the 3 nonfaulty processors are not sure of the value of $V_{p2}$, they are all sure that processor 2 is malfunctioning, simply because they can agree to set its value to NIL. It is only because they all agree that their valuation of processor 2 in the secound round of message exchange is "fishy" that they can set it to NIL. This is the reason that multiple faults with only 4 processors will not work. It is like a majority opinion consensus. The 3 nonfaulty processors agree that their vectors match everything except values for processor 2. This is what allows them to establish a consisent system state (us 3 are good ,and processor 2 is faulty, since us 3 are in consensus about everything)</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Multiple-Faults-with-4-processors.">Multiple Faults with 4 processors.<a class="anchor-link" href="#Multiple-Faults-with-4-processors.">¶</a></h2><p>The system would not be able to agree on a consistent state. As you can see above, the only reason that this situation is interactively consistent is because each of the nonfaulty processors is able to agree about everything except one value, which then allows them to excommunicate it. In a situation where multiple processors out of 4 were failing, the processors would not be able to even agree on the NIL value. Below we will make this clear by making both processor 2 and processor 3 faulty and running the same message exchange protocol again.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [67]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#abitrary setting of values. We keep the same values for ease.  </span>
+<span class="n">vp1</span> <span class="o">=</span> <span class="mi">4</span> 
+<span class="n">vp2</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">vp3</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">vp4</span> <span class="o">=</span> <span class="mi">2</span> 
+
+<span class="c1">#now we set the values that each processor communicates. In this case, we will assume that </span>
+<span class="c1">#processor 2 is being faulty. </span>
+<span class="n">vp11</span> <span class="o">=</span> <span class="n">vp1</span>
+<span class="n">vp22_false1</span> <span class="o">=</span> <span class="mi">12</span> <span class="c1"># we pick a random value that processor 2 is sending out to other processors. </span>
+<span class="n">vp22_false2</span> <span class="o">=</span> <span class="mi">14</span> <span class="c1"># we pick another random value</span>
+<span class="n">vp22</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">vp33_false1</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="n">vp33_false2</span> <span class="o">=</span> <span class="mi">1</span> 
+<span class="n">vp33</span> <span class="o">=</span> <span class="n">vp3</span>
+<span class="n">vp44</span> <span class="o">=</span> <span class="n">vp4</span>
+
+<span class="c1">#round 1 information vectors for each processor. Using arbitrary numbers. </span>
+
+<span class="n">r1_processor_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vp1</span><span class="p">,</span><span class="n">vp22_false2</span><span class="p">,</span><span class="n">vp33_false1</span><span class="p">,</span><span class="n">vp44</span><span class="p">])</span>
+<span class="n">r1_processor_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vp11</span><span class="p">,</span><span class="n">vp2</span><span class="p">,</span><span class="n">vp33_false2</span><span class="p">,</span><span class="n">vp44</span><span class="p">])</span>
+<span class="n">r1_processor_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vp11</span><span class="p">,</span><span class="n">vp22_false1</span><span class="p">,</span><span class="n">vp3</span><span class="p">,</span><span class="n">vp44</span><span class="p">])</span>
+<span class="n">r1_processor_4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vp11</span><span class="p">,</span><span class="n">vp22</span><span class="p">,</span><span class="n">vp33_false2</span><span class="p">,</span><span class="n">vp4</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"At the end of round one"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 1 values ="</span><span class="p">,</span> <span class="n">r1_processor_1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 2 values ="</span><span class="p">,</span> <span class="n">r1_processor_2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 3 values ="</span><span class="p">,</span> <span class="n">r1_processor_3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"processor 4 values ="</span><span class="p">,</span> <span class="n">r1_processor_4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>At the end of round one
+processor 1 values = [ 4 14 42  2]
+processor 2 values = [4 5 1 2]
+processor 3 values = [ 4 12  6  2]
+processor 4 values = [4 7 1 2]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Once again we will look at it from the case of processor 1.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [70]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r2_processor_1</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1_processor_1</span><span class="p">,</span> <span class="n">r1_processor_2</span><span class="p">,</span> <span class="n">r1_processor_3</span><span class="p">,</span> <span class="n">r1_processor_4</span><span class="p">]</span>
+<span class="n">r2_processor_2</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1_processor_2</span><span class="p">,</span> <span class="n">r1_processor_1</span><span class="p">,</span> <span class="n">r1_processor_3</span><span class="p">,</span> <span class="n">r1_processor_4</span><span class="p">]</span>
+<span class="n">r2_processor_3</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1_processor_3</span><span class="p">,</span> <span class="n">r1_processor_1</span><span class="p">,</span> <span class="n">r1_processor_2</span><span class="p">,</span> <span class="n">r1_processor_3</span><span class="p">]</span>
+<span class="n">r2_processor_4</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1_processor_4</span><span class="p">,</span> <span class="n">r1_processor_1</span><span class="p">,</span> <span class="n">r1_processor_2</span><span class="p">,</span> <span class="n">r1_processor_3</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">r2_processor_1</span><span class="p">:</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[ 4 14 42  2]
+[4 5 1 2]
+[ 4 12  6  2]
+[4 7 1 2]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For processor one to be certain that a processor is faulty, it has to have consensus with all the other nonfaulty processors (2 of them) about the system state. That is the only way for it to mark it as NIL, In this case the processor cannot establish a majority about any of the states. For processor 2 there are 4 different values, but this is the case for processor 3 also. The key thing to remember here is that if the nonfaulty processors together cannot establish which values to make NIL, then the system cannot be interactively consistent. Processor 1 cannot know just from the information it has that Processor 4 is nonfaulty, as the two of them together cannot establish that both processor 2 and 3 are faulty (unlike the case above where all 3 nonfaulty processors could identify the faulty one and agree to call it NIL). It would require an outside party (authenticator, some sort of master node/server that resets the system). Thus the best it can do is delink itself from the network, and the system fails.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h2><p>We covered all the relevant cases for a single fault in this post. In the next part I'm going to speak about generalizing these conclusions to n processors and m faults and a proof as to the limit of faults that a system with n processors can have when the only communication channel is 2 party messaging (peer to peer messaging).</p>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="/tag/math.html">math</a>
+      <a href="/tag/systems.html">systems</a>
+      <a href="/tag/algorithms.html">algorithms</a>
+      <a href="/tag/cryptography.html">cryptography</a>
+    </p>
+  </div>
+
+
+
+
+</article>
+
+    <footer>
+<p>&copy; Nikhil Prasad </p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Nikhil Prasad ",
+  "url" : "",
+  "image": "",
+  "description": "Nikhil Prasad's Thoughts and Writings"
+}
+</script>
+  <script>renderMathInElement(document.body);</script>
+</body>
+</html>
